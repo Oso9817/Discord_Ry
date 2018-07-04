@@ -67,7 +67,7 @@ class discord_rito():
                     self.enemytips0 += self.j['data'][champEntry]['enemytips'][i].replace('.', '.\n').replace('!', '!\n').replace("\n ", "\n")
                 
             #print(self.enemytips0)
-                
+            
                
             except Exception as msg:
                 print(msg)
@@ -84,4 +84,7 @@ class discord_rito():
 
             except Exception as e:
                 raise e
-discord_rito("Varus")
+        print(self.enemytips0)
+        print(self.skillKit)
+        print(self.allyTips0)
+#discord_rito("KogMaw")

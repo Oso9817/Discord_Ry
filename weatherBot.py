@@ -1,6 +1,6 @@
 import urllib.request, json, sys
 from urllib.request import urlopen
-
+from keys import w_ground
 #from twilio.rest import TwilioRestClient
 #from api_keys import *
 class weatherGet():
@@ -27,7 +27,6 @@ class weatherGet():
 		self.getWeather(state, city)
 		self.getHourWeather(state, city)
 		self.returnWeather(state ,city)
-		self.w_ground = ''
 
 	
 		#call with self.requestUrl(url) to get json data
@@ -38,7 +37,7 @@ class weatherGet():
 
 		#calls request url to retrieve and organize json data for general conditions resource
 	def getWeather(self, state, city):
-		self.requestUrl('http://api.wunderground.com/api/' + self.w_ground + '/conditions/q/{0}/{1}.json'.format(state, city))
+		self.requestUrl('http://api.wunderground.com/api/' + w_ground + '/conditions/q/{0}/{1}.json'.format(state, city))
 		self.location = self.j['current_observation']['display_location']['full']
 		self.temperature = self.j['current_observation']['temp_f']
 		self.weather = self.j['current_observation']['weather']
@@ -47,7 +46,7 @@ class weatherGet():
 
 		#get hour to hour weather based of hourly resource
 	def getHourWeather(self, state, city):
-		self.requestUrl('http://api.wunderground.com/api/' + self.w_ground + '/hourly/q/{0}/{1}.json'.format(state, city))
+		self.requestUrl('http://api.wunderground.com/api/' + w_ground + '/hourly/q/{0}/{1}.json'.format(state, city))
 		self.hours_48 = [f['temp']['english'] for f in self.j['hourly_forecast'] if f["FCTTIME"]['hour'] in ('10', '13', '16', '19', '22')]
 		self.hours_24 = self.hours_48[:-1]
 		self.time_10AM = self.hours_24[0]
@@ -61,7 +60,7 @@ class weatherGet():
 		self.getWeather(state, city)
 		self.getHourWeather(state, city)
 		#print(self.feels)
-		self.current_temp = '```\nThe weather in {0} is {1} at {2}F degrees but feels like {3}F. \n 10AM....{4}F \n 1PM.....{5}F \n 4PM.....{6}F \n 7PM.....{7}F \n 10PM....{8}F \n {9}```'.format(self.location, self.weather, self.temperature, self.feels, self.time_10AM, self.time_1PM, self.time_4PM, self.time_7PM, self.time_10PM, self.last_update)
-		#print('test1')
+		self.current_temp = '\nThe weather in {0} is {1} at {2}F degrees but feels like {3}F. \n 10AM....{4}F \n 1PM.....{5}F \n 4PM.....{6}F \n 7PM.....{7}F \n 10PM....{8}F \n {9}'.format(self.location, self.weather, self.temperature, self.feels, self.time_10AM, self.time_1PM, self.time_4PM, self.time_7PM, self.time_10PM, self.last_update)
+		#print(self.current_temp)
 
 #weatherGet('Pennsylvania', 'State College'.replace(' ', '%20'))
