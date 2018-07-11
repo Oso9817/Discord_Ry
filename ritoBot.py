@@ -1,12 +1,12 @@
 from urllib.request import urlopen
 import json, textwrap
-
+from keys import rito
 class discord_rito():
     #d = grab_weather()
     def __init__(self, champEntry):
         #self.dummyID = None
         #self.dummyName = None
-        self.ritokey = ''
+        self.enemytips0 = str()
         self.string = None
         self.allyRaw = None
         self.j = None
@@ -34,7 +34,7 @@ class discord_rito():
         #self.dummyName = self.j['name']
 
     def getChamp(self, champEntry):
-        self.requestUrl('https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&tags=allytips&tags=enemytips&tags=passive&tags=spells&dataById=false&api_key=' + self.ritokey)
+        self.requestUrl('https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&tags=allytips&tags=enemytips&tags=passive&tags=spells&dataById=false&api_key=' + rito)
         champEntry = champEntry.title()
         champEntry1 = champEntry
         champEntry = champEntry.replace(' ', '')
@@ -61,16 +61,22 @@ class discord_rito():
                 self.skillKit = "\n{0}\n P - {1}\n Q - {2}\n W - {3}\n E - {4}\n R - {5}".format(champEntry1, self.skillP, self.skillQ, self.skillW, self.skillE, self.skillR)
             except Exception as msg:
                 print(msg)
+            #print(self.skillKit)
+            try:
+                for i in range(0,len(self.j['data'][champEntry]['enemytips'])):
+                    self.enemytips0 += self.j['data'][champEntry]['enemytips'][i].replace('.', '.\n').replace('!', '!\n').replace("\n ", "\n")
+                
+            #print(self.enemytips0)
+            
+               
+            except Exception as msg:
+                print(msg)
+            
             try:
                 for i in range(0,len(self.j['data'][champEntry]['allytips'])):
                     self.allyTips0 += self.j['data'][champEntry]['allytips'][i].replace('.', '.\n').replace('!', '!\n').replace("\n ", "\n")
-                wrapper = textwrap.TextWrapper(initial_indent=" ", subsequent_indent="    ")
-                for line in wrapper.wrap(self.allyTips0):
-                    print(line)
-                self.allyTips1 = line
                 
-                self.allyTips0 = champEntry
-                print(champEntry)
+            #print(self.allyTips0)
 
                     
             except Exception as e:
@@ -78,4 +84,7 @@ class discord_rito():
 
             except Exception as e:
                 raise e
-discord_rito('Thresh')
+        print(self.enemytips0)
+        print(self.skillKit)
+        print(self.allyTips0)
+#discord_rito("KogMaw")

@@ -1,10 +1,9 @@
-import discord, asyncio
+import discord, asyncio, logging, sys
 from discord.ext import commands
 from discord.ext.commands import Bot
 from weatherBot import *
 from ritoBot import *
-import logging
-
+from keys import d_key
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
@@ -20,7 +19,7 @@ bot = commands.Bot(command_prefix='!', description=description)
 async def weather(ctx, state, *, city):
 		try:
 			await bot.say(weatherGet(state, city.replace(' ', '%20')).current_temp)
-			print('test')
+			#print('test')
 		except Exception as msg:
 			await bot.say('OwO! We made a fucky wucky!')
 			print('Could not pull weatherGet({0}, {1}).current_temp. {2}'.format(state, city, msg))	
@@ -31,8 +30,8 @@ async def ryan():
 async def ally(ctx, *, champEntry):
 				
 		try:
-			await bot.say((discord_rito(champEntry).allyTips1))
-			print('await bot.say((discord_rito({0}).allyTips1))'.format(champEntry))
+			await bot.say((discord_rito(champEntry).allyTips0))
+			print('await bot.say((discord_rito({0}).allyTips0))'.format(champEntry))
 		except Exception as e:
 			await bot.say("Couldn't get tips")
 			raise e				
@@ -44,4 +43,14 @@ async def champ(ctx, *, champEntry):
 		except Exception as e:
 			await bot.say("Couldn't get spells")
 			raise e	
-bot.run('')
+
+@bot.command(pass_context = True)
+async def enemy(ctx, *, champEntry):
+	try:
+		await bot.say((discord_rito(champEntry).enemytips0))
+		print('await bot.say((discord_rito({0}).enemytips0))'.format(champEntry))
+	except Exception as e:
+		await bot.say(e)
+		raise e
+
+bot.run(d_key)
